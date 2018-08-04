@@ -1,0 +1,44 @@
+Assumptions
+
+POST/auctions/{id}/bids
+-owner can set starting price higher or lower than reserve price.
+-user cannot bid the auction he/she owns.
+
+GET/auctions
+-LIMIT is set to 9999 if startIndex param is supplied but not count param.
+-OFFSET is set to 0 if count param is supplied but not startIndex param.
+-if the params entered does not match any of the auctions, empty JSON is returned
+-when bidder param is supplied, the currentBid will be the highest bid corresponding to the bidder itself (my assumptions may be wrong as I was confused with the concept of winner).
+
+GET/auctions/{id}/bids
+-not sorted by date as API did not specify
+
+POST/users/login
+-if one of the username or email is not supplied, or password is not suplied 400 is returned.
+
+GET/users{id}
+-if id param is not type number, 500 is returned (no 400 in api specs)
+
+PATCH/users{id}
+-if invalid values are suplied, 500 is returned (no 400 in api specs)
+-only owner can edit their own profile
+
+POST/auctions & GET/auctions
+-All money values are in sents (therefore, sample data is invalid)
+
+POST/auctions/{id}/photos
+-if auction already has photo, new photo will replace old photo
+
+POST/auctions/{id}/photos & DELETE/auctions/{id}/photos
+-only owners can upload photos to their auctions. 401 is retured otherwise.
+-photos cannot be changed/deleted when auction has started.
+
+GET/auctions/{id}/photos
+-if auction does not have photo, a default photo and 200 will be returned.
+
+*Any error from sql engine returns 500
+*any invalid path type params eg: /{id}/ will return 400.
+*for request to any POST type API that require client to supply a JSON request body, all fields (JSON keys) are compulsory.
+*assume request body is always of type JSON (except api related to photo)
+*unable to implement methods to check validity of JSON as it has been handled by the body-parser library
+*empty json (for PATCH endpoints) is valid-does nothing and returns 200 level status codes.
